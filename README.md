@@ -4,7 +4,11 @@ inspired by react hook form and props name and rewritten in a simple way.
 Don't hesitate to give me a star.
 
 ## Why don't use react-hook-form
-I had some problems in react-hook-form and I couldn't handle it, and I decided to write my own. The library is in basic and simple form and has basic features like hook-form side, you can also fork and edit as you like. 
+I had some problems in react-hook-form and I couldn't handle it, and I decided to write my own. The library is in its basic form, simple and has the same basic features as the hook-form side.
+I'm just referencing the props name so that I don't have to think about naming and to be able to think of the cases this library needs to handle. But I don't use their code.
+You can also fork back and edit as you like.
+
+Don't hesitate to give me a star.
 
 ## Usage:
 ```
@@ -64,7 +68,7 @@ export default App;
 ```
 
 
-To do next tasks:
+## To do next tasks:
 - [x] Validation
 - [ ] Apply Joi schema
 - [ ] Init default value in Field
