@@ -55,6 +55,12 @@ function App() {
       </Field>
 
       <div>
+        <div>Display Name</div>
+        <input {...register('displayName', { required: true, })} />
+        <div>{errors?.displayName}</div>
+      </div>
+
+      <div>
         <div>Password</div>
         <input {...register('password', { required: true, })} onChange={onChangeIp2} value={values?.password || ''} />
         <div>{errors?.password}</div>
