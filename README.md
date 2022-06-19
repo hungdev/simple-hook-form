@@ -1,6 +1,8 @@
 # React Simple Validation
 inspired by react hook form and props name and rewritten in a simple way.
 
+it can be used for both react native and reactjs.
+
 Don't hesitate to give me a star.
 
 ## Why don't use react-hook-form
