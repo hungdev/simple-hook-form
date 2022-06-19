@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-export default function Input({ onChange, value, errors, name, title }) {
+export default function Input({ control, onChange, value, errors, name, title }) {
+
+  useEffect(() => {
+    // control?.setValue('password', 'hello');
+  }, []);
 
   const onChangeInput = (ev) => onChange?.(ev.target.value);
 

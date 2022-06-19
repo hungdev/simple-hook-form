@@ -5,13 +5,14 @@ import Input from './Input';
 
 function App() {
   const control = useForm();
-  const { errors, handleSubmit, setValue, values } = control;
+  const { errors, handleSubmit, setValue, values, register } = control;
   console.log('control', control?.values);
 
   const onSubmit = (values) => {
     console.log('submit', values);
   };
 
+  // const onChangeIp2 = (ev) => setValue('password', ev.target.value, { shouldValidate: false });
   const onChangeIp2 = (ev) => setValue('password', ev.target.value);
 
 
@@ -22,15 +23,26 @@ function App() {
         control={control}
         rules={{
           required: true,
-          validate: (value) => value?.length > 3 ? 'Length is over 3 letter' : null
+          min: 15,
+          max: 20,
+          validate: (value) => value?.length > 5 ? 'Length is over 5 letter' : null
         }}
       >
-        {({ onChange, value = '', name }) => <Input onChange={onChange} value={value} errors={errors} name={name} title='User name' />}
+        {({ onChange, value = '', name }) => (
+          <Input
+            control={control}
+            onChange={onChange}
+            value={value}
+            errors={errors}
+            name={name}
+            title='User name' />
+        )}
       </Field>
 
       <div>
         <div>Password</div>
-        <input onChange={onChangeIp2} value={values?.password || ''} />
+        <input {...register('password', { required: true, })} onChange={onChangeIp2} value={values?.password || ''} />
+        <div>{errors?.password}</div>
       </div>
       <div onClick={handleSubmit(onSubmit)}>onSubmit</div>
     </div>

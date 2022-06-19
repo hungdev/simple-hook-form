@@ -1,60 +1,69 @@
 import React, { useState } from 'react';
+import { removeEmpty } from './utils';
+import { validateField } from './Validate';
 
 export default function Controller() {
   const [values, setValues] = useState({});
+  const [rules, setRules] = useState({});
   const [errors, setErrors] = useState({});
 
 
-  const onValidate = (name, val, rules) => {
-    // if (rules?.required) {
-    //   console.log('aaa');
-    //   if (!val) {
-    //     setErrors(prev => ({ ...prev, [name]: `Field ${name} is required` }));
-    //   }
-    //   return;
-    // }
-    // if (rules?.validate) {
-    //   console.log('validate');
-    //   const error = rules.validate(val);
-    //   console.log('error', error);
-    //   if (error) {
-    //     setErrors(prev => ({ ...prev, [name]: error }));
-    //   } else {
-    //     setErrors(prev => {
-    //       const newErrors = { ...prev };
-    //       delete newErrors[name];
-    //       return newErrors;
-    //     });
-    //   }
-    // }
-
+  const register = (name, fieldRules) => {
+    !values?.hasOwnProperty(name) && setValues(prev => ({ ...prev, [name]: undefined }));
+    !rules?.hasOwnProperty(name) && setRules(prev => ({ ...prev, [name]: fieldRules }));
   };
 
-  const onChange = (name, rules) => (value) => {
+
+  const onValidate = (name, val, fieldRules) => {
+    const error = validateField(name, val, fieldRules);
+    setErrors(prev => removeEmpty({ ...prev, [name]: error }));
+  };
+
+  const onChange = (name, fieldRules) => (value) => {
     setValues(prev => ({
       ...prev,
       [name]: value
     }));
-    onValidate(name, value, rules);
+    onValidate(name, value, fieldRules);
   };
 
-  const setValue = (name, value, conditions) => {
+  const setValue = (name, value, conditions = { shouldValidate: true }) => {
     // TODO: conditions
     // { shouldValidate: true },...
     setValues(prev => ({
       ...prev,
       [name]: value
     }));
+    conditions?.shouldValidate && onValidate(name, value, rules?.[name]);
   };
-
-  const watch = (name) => values?.[name];
 
   const getValues = (name) => name ? values?.[name] : values;
 
-  const handleSubmit = (cb) => () => cb(values);
+  const handleSubmit = (cb) => () => {
+    Object.keys(values).forEach(name => {
+      onValidate(name, values[name], rules[name]);
+    });
+
+    if (Object.values(errors).every(v => !v)) {
+      cb(values);
+    }
+  };
 
   const setError = (name, error) => setErrors(prev => ({ ...prev, [name]: error }));
 
+  const getError = (name) => errors?.[name];
 
-  return ({ values, onChange, errors, setValue, setErrors, setError, handleSubmit, watch, getValues });
+  const clearError = (name) => setErrors(prev => {
+    const newErrors = { ...prev };
+    delete newErrors[name];
+    return newErrors;
+  });
+
+
+  return ({
+    register,
+    values, setValue, getValues,
+    errors, setErrors, setError, getError, clearError,
+    onChange, handleSubmit,
+  });
 };
