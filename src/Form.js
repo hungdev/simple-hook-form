@@ -10,11 +10,12 @@ export default function Controller() {
 
   const register = (name, fieldRules) => {
     !values?.hasOwnProperty(name) && setValues(prev => ({ ...prev, [name]: undefined }));
-    !rules?.hasOwnProperty(name) && setRules(prev => ({ ...prev, [name]: fieldRules }));
+    !rules?.hasOwnProperty(name) && setRules(prev => ({ ...prev, [name]: fieldRules || {} }));
 
     return ({
       value: values?.[name] || '',
-      onChange: (event) => onChangeField(name, fieldRules, event?.target?.value)
+      onChange: (event) => onChangeField?.(name, fieldRules, event?.target?.value),
+      onBlur: (event) => onChangeField?.(name, fieldRules, event?.target?.value),
     });
   };
 
@@ -71,6 +72,6 @@ export default function Controller() {
     register,
     values, setValue, getValues,
     errors, setErrors, setError, getError, clearError,
-    onChange, handleSubmit,
+    onChange, onBlur: onChange, handleSubmit,
   });
 };

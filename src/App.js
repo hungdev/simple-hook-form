@@ -28,9 +28,10 @@ function App() {
           validate: (value) => value?.length > 5 ? 'Length is over 5 letter' : null
         }}
       >
-        {({ onChange, value = '', name }) => (
+        {({ onChange, value = '', name, onBlur }) => (
           <Input
             control={control}
+            onBlur={onBlur}
             onChange={onChange}
             value={value}
             errors={errors}
