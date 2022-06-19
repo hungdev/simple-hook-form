@@ -11,6 +11,11 @@ export default function Controller() {
   const register = (name, fieldRules) => {
     !values?.hasOwnProperty(name) && setValues(prev => ({ ...prev, [name]: undefined }));
     !rules?.hasOwnProperty(name) && setRules(prev => ({ ...prev, [name]: fieldRules }));
+
+    return ({
+      value: values?.[name] || '',
+      onChange: (event) => onChangeField(name, fieldRules, event?.target?.value)
+    });
   };
 
 
@@ -19,7 +24,9 @@ export default function Controller() {
     setErrors(prev => removeEmpty({ ...prev, [name]: error }));
   };
 
-  const onChange = (name, fieldRules) => (value) => {
+  const onChange = (name, fieldRules) => (value) => onChangeField(name, fieldRules, value);
+
+  const onChangeField = (name, fieldRules, value) => {
     setValues(prev => ({
       ...prev,
       [name]: value
