@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import useForm from './Form';
-import Field from './Field';
+import useForm from './library/Form';
+import Field from './library/Field';
 import Input from './Input';
 import Joi from 'joi';
-import { joiResolver } from './utils';
+import { joiResolver } from './library/utils';
 
 const schema = Joi.object({
   userName: Joi.string()
