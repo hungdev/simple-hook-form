@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { removeEmpty } from './utils';
+import { removeEmpty, omit, omitSingle } from './utils';
 import { validateField } from './Validate';
 
 //https://replit.com/@hungdev/joi-v17#index.js
@@ -26,7 +26,7 @@ export default function Controller({ validationSchema, defaultValues = {} } = {}
       setValues(({ name, ...prev }) => ({ ...prev }));
     }
     if (Array.isArray(name)) {
-      // setValues(({ ...name, ...prev }) => ({ ...prev }));
+      setValues(prev => omit(prev, name));
     }
   };
 
@@ -94,7 +94,7 @@ export default function Controller({ validationSchema, defaultValues = {} } = {}
 
 
   return ({
-    register,
+    register, unRegister,
     values, setValue, getValues,
     errors, setErrors, setError, getError, clearError,
     reset, trigger,
