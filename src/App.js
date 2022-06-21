@@ -39,8 +39,13 @@ const schema = Joi.object({
 });
 function App() {
   // const control = useForm({ validationSchema: joiResolver(schema) });
-  const control = useForm();
-  const { errors, handleSubmit, setValue, values, register } = control;
+  const control = useForm({
+    defaultValues: {
+      // userName: '',
+      // displayName: 'cee'
+    }
+  });
+  const { errors, handleSubmit, setValue, values, register, trigger } = control;
   console.log('control', control?.values);
 
   const onSubmit = (values) => {
@@ -50,6 +55,8 @@ function App() {
   // const onChangeIp2 = (ev) => setValue('password', ev.target.value, { shouldValidate: false });
   const onChangeIp2 = (ev) => setValue('password', ev.target.value);
 
+
+  const triggerOneField = () => trigger(['userName', 'password']);
 
   return (
     <div className="App">
@@ -62,6 +69,7 @@ function App() {
           max: 20,
           validate: (value) => value?.length > 5 ? 'Length is over 5 letter' : null
         }}
+        defaultValue='default value from field'
       >
         {({ onChange, value = '', name, onBlur }) => (
           <Input
@@ -77,7 +85,7 @@ function App() {
 
       <div>
         <div>Display Name</div>
-        <input {...register('displayName', { required: true, })} />
+        <input {...register('displayName', { required: true }, 'this is default value')} />
         <div>{errors?.displayName}</div>
       </div>
 
@@ -86,9 +94,10 @@ function App() {
         <input {...register('password', { required: true, })} onChange={onChangeIp2} value={values?.password || ''} />
         <div>{errors?.password}</div>
       </div>
+      <div onClick={triggerOneField}>Trigger validation</div>
       <div onClick={handleSubmit(onSubmit)}>onSubmit</div>
     </div>
   );
-}
+};
 
 export default App;

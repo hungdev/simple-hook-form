@@ -114,11 +114,10 @@ export default App;
 ## To do next tasks:
 - [x] Validation
 - [x] Apply Joi schema
-- [ ] Init default value in Field
-- [ ] Init default state useForm
-- [ ] Init default validation
-- [ ] Reset
-- [ ] Trigger => validate one or multiple or all fields, if dont pass params => all, pass string => one, ['field1,'field2'] => validate each element in array
+- [x] Init default value in Field
+- [x] Init default state useForm
+- [x] Reset
+- [x] Trigger => validate one or multiple or all fields, if dont pass params => all, pass string => one, ['field1,'field2'] => validate each element in array
 - [ ] unregister field => remove fields in list validation fields
 
 

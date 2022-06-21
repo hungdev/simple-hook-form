@@ -4,14 +4,14 @@ import { validateField } from './Validate';
 
 //https://replit.com/@hungdev/joi-v17#index.js
 
-export default function Controller({ validationSchema } = {}) {
-  const [values, setValues] = useState({});
+export default function Controller({ validationSchema, defaultValues = {} } = {}) {
+  const [values, setValues] = useState(defaultValues);
   const [rules, setRules] = useState({});
   const [errors, setErrors] = useState({});
 
 
-  const register = (name, fieldRules) => {
-    !values?.hasOwnProperty(name) && setValues(prev => ({ ...prev, [name]: undefined }));
+  const register = (name, fieldRules, defaultValue) => {
+    !values?.hasOwnProperty(name) && setValues(prev => ({ ...prev, [name]: defaultValue }));
     !rules?.hasOwnProperty(name) && setRules(prev => ({ ...prev, [name]: fieldRules || {} }));
 
     return ({
@@ -19,6 +19,15 @@ export default function Controller({ validationSchema } = {}) {
       onChange: (event) => onChangeField?.(name, fieldRules, event?.target?.value),
       onBlur: (event) => onChangeField?.(name, fieldRules, event?.target?.value),
     });
+  };
+
+  const unRegister = (name) => {
+    if (typeof name === 'string') {
+      setValues(({ name, ...prev }) => ({ ...prev }));
+    }
+    if (Array.isArray(name)) {
+      // setValues(({ ...name, ...prev }) => ({ ...prev }));
+    }
   };
 
 
@@ -39,7 +48,6 @@ export default function Controller({ validationSchema } = {}) {
 
   const setValue = (name, value, conditions = { shouldValidate: true }) => {
     // TODO: conditions
-    // { shouldValidate: true },...
     setValues(prev => ({
       ...prev,
       [name]: value
@@ -69,11 +77,27 @@ export default function Controller({ validationSchema } = {}) {
     return newErrors;
   });
 
+  const reset = (obj = {}) => {
+    setValues(prev => defaultValues || ({ ...Object.keys(prev).reduce((acc, name) => ({ ...acc, [name]: '' }), {}), ...obj }));
+    setErrors({});
+  };
+
+  const trigger = (conditions) => {
+    if (typeof conditions === 'string') {
+      onValidate(conditions, values[conditions], rules[conditions]);
+    } else if (Array.isArray(conditions)) {
+      conditions.forEach(name => onValidate(name, values[name], rules[name]));
+    } else {
+      Object.keys(values).forEach(name => onValidate(name, values[name], rules[name]));
+    }
+  };
+
 
   return ({
     register,
     values, setValue, getValues,
     errors, setErrors, setError, getError, clearError,
+    reset, trigger,
     onChange, onBlur: onChange, handleSubmit,
   });
 };
