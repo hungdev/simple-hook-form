@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { removeEmpty } from './utils';
 import { validateField } from './Validate';
 
-export default function Controller() {
+//https://replit.com/@hungdev/joi-v17#index.js
+
+export default function Controller({ validationSchema } = {}) {
   const [values, setValues] = useState({});
   const [rules, setRules] = useState({});
   const [errors, setErrors] = useState({});
@@ -21,7 +23,7 @@ export default function Controller() {
 
 
   const onValidate = (name, val, fieldRules) => {
-    const error = validateField(name, val, fieldRules);
+    const error = validationSchema ? validationSchema?.resolve({ [name]: val })?.getFilteredErrors(name) : validateField(name, val, fieldRules);
     setErrors(prev => removeEmpty({ ...prev, [name]: error }));
   };
 

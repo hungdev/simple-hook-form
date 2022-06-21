@@ -78,7 +78,7 @@ export default App;
 
 ## To do next tasks:
 - [x] Validation
-- [ ] Apply Joi schema
+- [x] Apply Joi schema
 - [ ] Init default value in Field
 - [ ] Init default state useForm
 - [ ] Init default validation
