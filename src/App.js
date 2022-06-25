@@ -64,6 +64,37 @@ function App() {
         name='userName'
         control={control}
         rules={{
+          required: {
+            value: true,
+            message: 'username is required'
+          },
+          // min: {
+          //   value: 5,
+          //   message: 'username must be higher than 5'
+          // },
+          // max: {
+          //   value: 10,
+          //   message: 'username must be at less than 10'
+          // },
+          validate: (value) => value?.length > 5 ? 'Length is over 5 letter' : null
+        }}
+      // defaultValue='default value from field'
+      >
+        {({ onChange, value = '', name, onBlur }) => (
+          <Input
+            control={control}
+            onBlur={onBlur}
+            onChange={onChange}
+            value={value}
+            errors={errors}
+            name={name}
+            title='User name' />
+        )}
+      </Field>
+      <Field
+        name='testKey'
+        control={control}
+        rules={{
           required: true,
           min: 15,
           max: 20,
@@ -82,6 +113,16 @@ function App() {
             title='User name' />
         )}
       </Field>
+
+      <div className="field">
+        <div className="title">Display Name</div>
+        <select {...register("category")}>
+          <option value="">Select...</option>
+          <option value="A">Option A</option>
+          <option value="B">Option B</option>
+        </select>
+        <div className="error-message">{errors?.category}</div>
+      </div>
 
       <div>
         <div>Display Name</div>
